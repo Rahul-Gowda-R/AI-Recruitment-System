@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ATS Resume Score Checker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 60px auto;
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333333;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 15px;
+            display: block;
+            color: #444;
+        }
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .score {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 20px;
+            color: #28a745;
+        }
+        /* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: #fff;
+    text-align: center;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #333; /* Ensure consistent background color */
+    padding: 15px 0;
+    position: fixed; /* Make the navbar fixed to the top */
+    top: 0; /* Position it at the very top */
+    width: 100%; /* Span the full width of the page */
+    z-index: 1000; /* Keep it above other elements */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.navbar-logo {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+}
+
+.navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.navbar-link:hover {
+    color: #2575fc;
+}
+
+/* Page Content */
+.container {
+    margin-top: 70px; /* Add margin to prevent overlap with fixed navbar */
+    padding: 20px;
+}
+
+/* Home Page Styles */
+.homepage {
+    margin-top: 20px; /* Extra spacing for homepage content */
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+p {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.btn-custom {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: #2575fc;
+    text-decoration: none;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.btn-custom:hover {
+    background-color: #fff;
+    color: #2575fc;
+}
+
+/* Button Hover Effects */
+.btn-custom:focus {
+    outline: none;
+    box-shadow: 0 0 5px 2px rgba(37, 117, 252, 0.5);
+}
+
+.container {
+    max-width: 600px;
+    margin: 100px auto 60px auto;  /* Increased top margin to give space below navbar */
+    background: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    color: #000; /* Optional: make text readable against white background */
+}
+
+    </style>
+
+</head>
+<body>
+ <nav class="navbar">
+        <div class="navbar-container">
+            <a href="{{ url_for('home') }}" class="navbar-logo">Recruit AI</a>
+            <ul class="navbar-links">
+                <a href="{{ url_for('ats_score_route') }}" class="navbar-link">ATS Checker</a>
+                <li><a href="{{ url_for('resume_upload') }}" class="navbar-link">Resume Upload & Job Search</a></li>
+                <li><a href="{{ url_for('skill_test') }}" class="navbar-link">Skill Test</a></li>
+                <li><a href="{{ url_for('live_interview') }}" class="navbar-link">Live Interview</a></li>
+                 <li><a href="{{ url_for('logout') }}" class="navbar-link">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <h2>ATS Resume Score Checker</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <label for="resume">Upload Resume (PDF or DOCX):</label>
+            <input type="file" name="resume" id="resume" required>
+
+            <label for="jd">Paste Job Description:</label>
+            <textarea name="jd" id="jd" rows="10" required></textarea>
+
+            <button type="submit">Check ATS Score</button>
+        </form>
+{% if score is not none %}
+    <div class="score">
+        ATS Match Score: {{ score }}%
+    </div>
+
+    <div class="back-home" style="text-align: center; margin-top: 20px;">
+        <a href="{{ url_for('welcome') }}">
+            <button style="padding: 10px 20px; font-size: 16px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Back to Home
+            </button>
+        </a>
+    </div>
+{% endif %}
+
+    </div>
+</body>
+</html>

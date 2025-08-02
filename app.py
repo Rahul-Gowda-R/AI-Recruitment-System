@@ -8,11 +8,51 @@ import mediapipe as mp
 from index import process_resume
 from flask_bcrypt import Bcrypt
 import logging
+from resume_parser import extract_text_from_resume
+import re
+import nltk
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
-
+nltk.download('stopwords')
+from nltk.corpus import stopwords
 app = Flask(__name__)
 app.secret_key = "prasad"
 bcrypt = Bcrypt(app)
+
+
+def preprocess(text):
+    text = text.lower()
+    text = re.sub(r'[^a-zA-Z0-9\s]', '', text)
+    text = re.sub(r'\s+', ' ', text)
+    stop_words = set(stopwords.words('english'))
+    words = [word for word in text.split() if word not in stop_words]
+    return ' '.join(words)
+
+def keyword_match_score(resume_text, jd_text):
+    jd_keywords = re.findall(r'\b[a-zA-Z][a-zA-Z0-9.+#]+\b', jd_text.lower())
+    resume_words = set(resume_text.lower().split())
+    matched = [word for word in jd_keywords if word in resume_words]
+    if len(set(jd_keywords)) == 0:
+        return 0.0
+    return round(len(matched) / len(set(jd_keywords)) * 100, 2)
+
+def ats_score(resume_text, jd_text):
+    resume_clean = preprocess(resume_text)
+    jd_clean = preprocess(jd_text)
+
+    # Cosine Similarity Score
+    vectorizer = TfidfVectorizer()
+    vectors = vectorizer.fit_transform([resume_clean, jd_clean])
+    cosine = cosine_similarity(vectors[0], vectors[1])[0][0] * 100
+
+    # Keyword Match Score
+    keyword_score = keyword_match_score(resume_clean, jd_clean)
+
+    # Weighted Score: 70% Cosine + 30% Keyword
+    final_score = 0.7 * cosine + 0.3 * keyword_score
+    return round(final_score, 2)
+
 
 # MySQL Configuration for Skill Test
 db_config = {
@@ -79,6 +119,29 @@ def welcome():
     else:
         flash("Please log in to access this page.", "danger")
         return redirect(url_for('login'))
+
+
+# ATS checker
+@app.route('/ats-score', methods=["GET", "POST"])
+def ats_score_route():
+    score = None
+    error = None
+
+    if request.method == "POST":
+        resume_file = request.files.get("resume")
+        jd_text = request.form.get("jd")
+
+        if not resume_file or not jd_text:
+            error = "Both resume and job description are required."
+        else:
+            try:
+                resume_text = extract_text_from_resume(resume_file)
+                score = ats_score(resume_text, jd_text)
+            except Exception as e:
+                error = f"Error processing resume: {str(e)}"
+
+    return render_template("ats.html", score=score, error=error)
+
 
 # Resume Upload Configuration
 app.config["UPLOAD_FOLDER"] = "./uploads"
