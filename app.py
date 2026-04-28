@@ -1,10 +1,10 @@
+print("Running correct file")
 from flask import Flask, render_template, request, jsonify, session, Response, redirect, url_for, flash
 import os
 from werkzeug.utils import secure_filename
 import mysql.connector
 from datetime import datetime
 import cv2
-import mediapipe as mp
 from index import process_resume
 from flask_bcrypt import Bcrypt
 import logging
@@ -58,8 +58,8 @@ def ats_score(resume_text, jd_text):
 db_config = {
     "host": "localhost",
     "user": "root",
-    "password": "2003",
-    "database": "TEST_PLATFORM"
+    "password": "paavu15",
+    "database": "recruitai"
 }
 @app.route('/registeration', methods=['GET', 'POST'])
 def registeration():
@@ -346,11 +346,6 @@ def check_cheating():
 def live_interview():
     return render_template('ihome.html', message="Welcome to the live interview section.")
 
-# Live Interview
-# Initialize MediaPipe Face Mesh and drawing utilities
-mp_drawing = mp.solutions.drawing_utils
-mp_drawing_styles = mp.solutions.drawing_styles
-mp_face_mesh = mp.solutions.face_mesh
 
 # Global variables for storing user details
 user_details = {"username": "", "email": ""}
