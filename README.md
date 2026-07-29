@@ -1,210 +1,307 @@
-# 🚀 AI-Powered Recruitment System
+# 🚀 RecruitAI – Intelligent Recruitment Platform
 
-## 📌 Overview
-
-The **AI-Powered Recruitment System** is a full-stack web application designed to automate and enhance the hiring process. It combines **Artificial Intelligence, Natural Language Processing (NLP), and Web Development** to evaluate resumes, conduct skill-based assessments, and monitor candidate behavior during interviews.
-
-This system helps recruiters make smarter decisions by analyzing resumes, scoring candidates using ATS logic, and ensuring fairness through anti-cheating mechanisms.
+RecruitAI is a full-stack recruitment platform that simplifies and enhances the hiring process using **Artificial Intelligence**, **Natural Language Processing (NLP)**, and **Computer Vision**. Built with **Flask**, **MySQL**, **OpenCV**, and **Scikit-learn**, it enables recruiters to screen resumes, conduct online assessments, monitor interviews, and identify the most suitable candidates efficiently.
 
 ---
 
-## 🔥 Key Features
+# ✨ Features
 
-### 🔐 User Authentication
+### 📄 AI-Assisted Resume Screening
 
-* Secure registration and login system
-* Password hashing using Flask-Bcrypt
-* Session-based authentication
+* ATS-based resume evaluation
+* PDF resume parsing
+* TF-IDF and Cosine Similarity scoring
+* Keyword matching against job descriptions
+* Resume ranking based on relevance
 
-### 📄 Resume Analysis (ATS Scoring)
+### 🧪 Online Skill Assessment
 
-* Extracts text from resumes (PDF/Image)
-* Uses NLP techniques (TF-IDF + Cosine Similarity)
-* Calculates ATS score based on job description
-* Keyword matching + semantic similarity
+* Interactive aptitude and technical tests
+* Candidate response tracking
+* Performance evaluation
+* Automated result processing
 
-### 🧪 Skill-Based Testing System
+### 🎥 Interview Monitoring
 
-* Dynamic question generation based on difficulty
-* Stores user responses in database
-* Tracks performance
+* Live webcam integration
+* Face monitoring using OpenCV
+* Browser tab-switch detection
+* Suspicious activity logging
+* Helps maintain assessment integrity
 
-### 🚨 Anti-Cheating Detection
+### 💼 Job Recommendation
 
-* Detects tab switching during tests
-* Logs suspicious activity in database
-* Auto-submit after multiple violations
+* Job matching based on skills
+* Location-based opportunity filtering
+* Personalized recommendations
 
-### 🎥 Live Interview Monitoring
+### 🔐 Authentication
 
-* Real-time video capture using OpenCV
-* Face tracking and monitoring
-* Simulates real interview environment
-
-### 💼 Job Matching System
-
-* Suggests jobs based on role and location
-* Filters opportunities dynamically
+* Secure registration and login
+* Password hashing with Flask-Bcrypt
+* Session management
 
 ---
 
-## 🛠️ Tech Stack
+# 🛠️ Tech Stack
 
-### 💻 Frontend
+| Technology   | Purpose              |
+| ------------ | -------------------- |
+| Python       | Backend Development  |
+| Flask        | Web Framework        |
+| MySQL        | Database             |
+| HTML5        | Frontend             |
+| CSS3         | Styling              |
+| JavaScript   | Client-side Logic    |
+| OpenCV       | Interview Monitoring |
+| Scikit-learn | ATS Resume Scoring   |
+| NLTK         | Text Preprocessing   |
+| PyMuPDF      | Resume Parsing       |
+| Flask-Bcrypt | Authentication       |
 
-* HTML
-* CSS
-* JavaScript
+---
 
-### ⚙️ Backend
+# 📂 Project Structure
 
-* Python (Flask)
+```text
+RecruitAI/
+│
+├── app.py                  # Main Flask application
+├── index.py                # Resume processing logic
+├── resume_parser.py        # PDF text extraction
+├── requirements.txt
+│
+├── templates/
+│   ├── auth.html
+│   ├── ats.html
+│   ├── interview.html
+│   ├── resume.html
+│   ├── test.html
+│   └── index.html
+│
+├── static/
+│   ├── css/
+│   ├── js/
+│   └── images/
+│
+└── README.md
+```
 
-### 🧠 AI / ML
+---
 
-* Natural Language Processing (NLTK)
+# 🚀 Key Modules
+
+### 📑 ATS Resume Analysis
+
+The system extracts text from uploaded resumes and compares it with a job description using:
+
+* Text preprocessing (NLTK)
 * TF-IDF Vectorization
-* Cosine Similarity (Scikit-learn)
+* Cosine Similarity
+* Keyword Matching
 
-### 🗄️ Database
-
-* MySQL
-
-### 📦 Other Libraries
-
-* OpenCV (Computer Vision)
-* Flask-Bcrypt (Authentication Security)
-* PDF/Text Processing Libraries
+A weighted ATS score is then generated to rank candidates.
 
 ---
 
-## 🗂️ Project Structure
+### 🧪 Skill Assessment
 
-```
-RecruitAi/
-│── app.py
-│── index.py
-│── resume_parser.py
-│── templates/
-│── static/
-│── uploads/
-│── requirements.txt
-│── README.md
-```
+Candidates complete online assessments while the system records responses and calculates performance scores.
 
 ---
 
-## ⚙️ Installation & Setup
+### 🎥 Interview Monitoring
 
-### 1️⃣ Clone the repository
+OpenCV captures webcam input during interviews to support basic monitoring, while browser tab-switch detection helps discourage dishonest behavior.
+
+---
+
+### 🔐 Authentication
+
+Recruiters and candidates can securely register and log in using encrypted passwords managed with Flask-Bcrypt.
+
+---
+
+# ⚙️ Installation
+
+### Clone the repository
 
 ```bash
-git clone https://github.com/your-username/AI-Recruitment-System.git
+git clone https://github.com/Rahul-Gowda-R/AI-Recruitment-System.git
 cd AI-Recruitment-System
 ```
 
-### 2️⃣ Create virtual environment
+### Create a virtual environment
+
+**Windows**
 
 ```bash
 python -m venv venv
 venv\Scripts\activate
 ```
 
-### 3️⃣ Install dependencies
+**Linux/macOS**
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4️⃣ Configure MySQL
+### Configure MySQL
 
-* Create a database:
+Create a database:
 
 ```sql
 CREATE DATABASE recruitai;
 ```
 
-* Update database config in `app.py`:
+Update the MySQL credentials in `app.py`:
 
 ```python
 db_config = {
     "host": "localhost",
     "user": "root",
-    "password": "your_password",
+    "password": "YOUR_PASSWORD",
     "database": "recruitai"
 }
 ```
 
-### 5️⃣ Run the application
+### Run the application
 
 ```bash
 python app.py
 ```
 
-### 6️⃣ Open in browser
+Open your browser:
 
-```
-http://127.0.0.1:8000/
-```
-
----
-
-## 📸 Screenshots (Add your images here)
-
-```
-/screenshots/login.png
-/screenshots/ats-score.png
-/screenshots/skill-test.png
-/screenshots/dashboard.png
+```text
+http://127.0.0.1:8000
 ```
 
 ---
 
-## 🧠 How It Works
+# 🧠 System Workflow
 
-1. User registers and logs in
-2. Uploads resume + enters job description
-3. System extracts and preprocesses text
-4. ATS score is calculated using NLP
-5. User takes skill-based test
-6. System tracks behavior and prevents cheating
-7. Results are stored in MySQL database
+```text
+Candidate Registration
+          │
+          ▼
+Resume Upload
+          │
+          ▼
+Resume Parsing
+          │
+          ▼
+ATS Score Calculation
+          │
+          ▼
+Online Skill Test
+          │
+          ▼
+Interview Monitoring
+          │
+          ▼
+Candidate Evaluation
+          │
+          ▼
+Recruitment Decision
+```
 
 ---
 
-## 🚀 Future Enhancements
+# 📸 Screenshots
 
-* 📊 User dashboard with analytics
-* 📈 Resume score history tracking
-* 🌐 Deployment on cloud (AWS/Render)
-* 🤖 AI interview assistant (voice-based)
-* 📱 Mobile-friendly UI
+Add screenshots inside a `screenshots/` directory.
+
+Example:
+
+```markdown
+![Login](screenshots/login.png)
+
+![ATS Dashboard](screenshots/ats.png)
+
+![Skill Test](screenshots/test.png)
+
+![Interview](screenshots/interview.png)
+```
 
 ---
 
-## 👨‍💻 Author
+# 🚀 Future Enhancements
+
+* AI-generated interview questions
+* Resume improvement suggestions
+* LLM-powered candidate summaries
+* Video interview transcription
+* Emotion and sentiment analysis
+* Recruiter analytics dashboard
+* Email notifications
+* Multi-role recruiter support
+* Cloud deployment
+* Advanced candidate ranking
+
+---
+
+# 📚 Learning Outcomes
+
+* Full-stack web development using Flask
+* Resume parsing and document processing
+* NLP for ATS resume matching
+* Computer vision with OpenCV
+* Authentication and session management
+* Database integration with MySQL
+* AI-assisted recruitment workflows
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository.
+2. Create a feature branch.
+
+```bash
+git checkout -b feature-name
+```
+
+3. Commit your changes.
+
+```bash
+git commit -m "Add new feature"
+```
+
+4. Push your branch.
+
+```bash
+git push origin feature-name
+```
+
+5. Open a Pull Request.
+
+---
+
+# 👨‍💻 Author
 
 **Rahul Gowda R**
 
-* Engineering Student | AI & Web Developer
-* Passionate about building real-world tech solutions
+* GitHub: https://github.com/Rahul-Gowda-R
+* LinkedIn: https://www.linkedin.com/in/rahulgowdar/
 
 ---
 
-## 🌟 Acknowledgement
+# 📄 License
 
-This project demonstrates the integration of **AI + Full Stack Development + Database Systems** to solve real-world recruitment challenges.
+This project is intended for educational and research purposes.
 
 ---
 
 ## ⭐ Support
 
-If you like this project:
-
-* ⭐ Star the repository
-* 🍴 Fork it
-* 📢 Share it
-
----
-
-> “Focused effort with clarity leads to powerful results.”
+If you found this project useful, consider giving it a **⭐ Star** on GitHub and sharing your feedback!
